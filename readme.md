@@ -1,6 +1,6 @@
 # Conversations
 
-## Overview:
+## Overview
 
 Conversations is a hosted application that provides an API for threaded email conversations that support "reply-to" functionality. A good example of this is the Basecamp messaging feature. If  you receive an email notification of a new message, you can simply reply to the message, and your reply will be inserted into the conversation, whereupon all of the participants in the conversation will themselves be notified of your update.
 
@@ -12,7 +12,7 @@ The conversations application also contains a very simple implementation of a we
 
 ### Conversation
 
-A single threaded communication consisting of a chronological sequence of **messages**. A conversation may have one or more participants. Converstions have a subject / title field.
+A single threaded communication consisting of a chronological sequence of **messages**. A conversation may have one or more participants. Conversations have a subject / title field.
 
 ### Message
 
@@ -32,7 +32,7 @@ Notifications are sent via email. Each participant in a conversation is notified
 
     POST /api/v1/conversations HTTP/1.1
 
-A conversation is begun with a POST to the API (/api/conversations). The POST request contains details of the message, and a list of recipient emails. The service will forward the message, via email, to each the recipients, and generate a unique ID for the conversation. This ID will be returned to the calling application in the HTTP response, along with a link back to URL for the conversation.
+A conversation is begun with a POST to the API. The POST request contains details of the message, and a list of recipient emails. The service will forward the message, via email, to each of the recipients, and generate a unique ID for the conversation. This ID will be returned to the calling application in the HTTP response, along with a link back to URL for the conversation (in the Location header). The response status code will be 201.
 
 *Sample Request* 
 
@@ -50,7 +50,7 @@ A conversation is begun with a POST to the API (/api/conversations). The POST re
 *Sample Response*
 
     HTTP 201 Created
-    Location: http://example.com/api/conversations/123456
+    Location: http://example.com/api/v1/conversations/123456
 
     {
         'conversation': 
@@ -146,7 +146,7 @@ If the recipient is viewing the conversational thread on the web (e.g. looking a
 *Sample Response*
 
     HTTP 201 Created
-    Location: http://example.com/api/conversations/123456/2
+    Location: http://example.com/api/v1/conversations/123456/2
 
     {
         'id': "123456.2",
@@ -161,7 +161,7 @@ When a message is posted to an existing conversation, a notification is sent via
 
 ### Recipient replies to message (via email)
 
-On receipt of the message notification, one or more recipients may decide to reply to the email itself (rather than going to the website to view the conversation). They hit reply, and send their message back to 123456@conversations.com. The service will then parse out the ID (123456), add the message (stripping out the original) to the conversation, and notify all other recipients of the update (everyone except the sender). The email handler should call the web handler internally - it is the same functionality, delivered over a different protocol.
+On receipt of the message notification, one or more recipients may decide to reply to the email itself (rather than going to the website to view the conversation). They hit reply, and send their message back to the reply-to address (e.g. 123456@conversations.com). The service will then parse out the ID (123456), add the message (stripping out the original) to the conversation, and notify all other recipients of the update (everyone except the sender). The email handler should call the web handler internally - it is the same functionality, delivered over a different protocol.
 
 *Actions*
 
