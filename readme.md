@@ -32,7 +32,29 @@ Notifications are sent via email. Each participant in a conversation is notified
 
     POST /api/v1/conversations HTTP/1.1
 
-A conversation is begun with a POST to the API. The POST request contains details of the message, and a list of recipient emails. The service will forward the message, via email, to each of the recipients, and generate a unique ID for the conversation. This ID will be returned to the calling application in the HTTP response, along with a link back to URL for the conversation (in the Location header). The response status code will be 201.
+A conversation itself consists of just an empty shell for the subsequent messages that it contains. The first message that is appended to the conversation sets the "subject"; the sender and recipient of any message in the conversation are appended to the list of participants.
+
+*Sample Request* 
+
+    POST /api/v1/conversations HTTP/1.1
+    Content-type: application/json;
+    Accept: application/json;
+
+*Sample Response*
+
+    HTTP/1.1 201 Created
+    Location: http://example.com/api/v1/conversations/123456
+
+    {
+        'conversation': 
+        {
+            'id': "123456",
+            'created': "2012-06-22T12:43:37+0100",
+            'reply-to:': "123456@conversations.com"
+        }
+    }
+
+The API supports the concept of initialising a conversation with the first message. This will create both the conversation shell, and the first message, which will be appended to the conversation, setting the subject and initial participants. This is the most common use case.
 
 *Sample Request* 
 
@@ -57,7 +79,6 @@ A conversation is begun with a POST to the API. The POST request contains detail
         {
             'id': "123456",
             'created': "2012-06-22T12:43:37+0100",
-            'location': "http://example.com/api/v1/conversations/123456",
             'reply-to:': "123456@conversations.com",
             'subject': "Example message"
             'participants': 
@@ -69,7 +90,6 @@ A conversation is begun with a POST to the API. The POST request contains detail
             {
                 'id': "123456.1",
                 'created':"2012-06-22T12:43:37+0100",
-                'location': "http://example.com/api/v1/conversations/123456/1",
                 'from': "hugo@example.com",
                 'body': "this is a message",
                 'notifications':["fred@example.com"]
@@ -101,7 +121,6 @@ Returns the entire conversation, including all messages, and a list of participa
         {
             'id':"123456",
             'created':"2012-06-22T12:43:37+0100",
-            'location': "http://example.com/api/v1/conversations/123456",
             'reply-to:': "123456@conversations.com",
             'subject': "Example message"
             'participants': 
@@ -113,7 +132,6 @@ Returns the entire conversation, including all messages, and a list of participa
                 {
                     'id': "123456.1",
                     'created':"2012-06-22T12:43:37+0100",
-                    'location': "http://example.com/api/v1/conversations/123456/1",
                     'from': "hugo@example.com",
                     'body': "this is a message"
                     'notifications':["fred@example.com"]
@@ -121,7 +139,6 @@ Returns the entire conversation, including all messages, and a list of participa
                 {
                     'id': "123456.2",
                     'created':"2012-06-22T12:43:37+0100",
-                    'location': "http://example.com/api/v1/conversations/123456/2",
                     'from': "fred@example.com",
                     'body': "this is a reply"
                     'notifications':["hugo@example.com"]
@@ -156,7 +173,6 @@ If the recipient is viewing the conversational thread on the web (e.g. looking a
     {
         'id': "123456.2",
         'created': "2012-06-22T12:43:37+0100",
-        'location': "http://example.com/api/v1/conversations/123456/2",
         'participants': ["fred@example.com","hugo@example.com"],
         'notifications':["hugo@example.com"]
     }
@@ -191,7 +207,6 @@ This returns an individual message, out of context of the parent conversation.
     {
         'id': "123456.2",
         'created': "2012-06-22T12:43:37+0100",
-        'location': "http://example.com/api/v1/conversations/123456/2",
         'from': "fred@example.com",
         'body': "this is a reply"
         'participants': ["fred@example.com","hugo@example.com"],
