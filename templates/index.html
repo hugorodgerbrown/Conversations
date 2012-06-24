@@ -1,12 +1,39 @@
-<html>
-    <head>
-        <title>Conversations</title>
-    </head>
-    <body>
-        <form name="input" action="/api/v1/conversations" method="post">
-            Subject: <input type="text" name="subject" />
-            Participants: <input type="text" name="participants" />
-            <input type="submit" />
-        </form>
-    </body>
-</html
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="span1">&nbsp;</div>
+        <div class="span8">
+            <form name="input" action="/conversations" method="post" class="form-horizontal">
+                <fieldset>
+                    <legend>Legend text</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="sender">From:</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="sender" name="sender" placeholder="Type your email here">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="recipient">To:</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="recipient" name="recipient" placeholder="Type your recipient's email here">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="subject">Subject:</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="subject" name="subject" placeholder="e.g. Exciting new opportunity">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="text">Message:</label>
+                        <div class="controls">
+                            <input type="text" class="input-xlarge" id="text" name="text" placeholder="e.g. Nice to meet you, to meet you...">
+                        </div>
+                    </div>
+                <input type="submit" />
+            </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

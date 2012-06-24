@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+            {% block content %}
+
+            <table border=1>
+                <tr>
+                    <th>Id</th>
+                    <th>Created</th>
+                    <th>Subject</th>
+                </tr>
+                {% for conversation in conversations %}
+                <tr>
+                    <td>{{conversation.id}}</td>
+                    <td>{{conversation.created_at}}</td>
+                    <td>{{conversation.subject}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+
+{% endblock content %}

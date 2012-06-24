@@ -3,6 +3,9 @@ import json
 import logging
 
 class Conversation(db.Model):
+    
+    ''' Represents the shell container for a list of messages '''
+    
     created_at = db.DateTimeProperty(auto_now_add=True)
     subject = db.StringProperty(required=True)
     participants = db.StringListProperty()
@@ -15,8 +18,34 @@ class Conversation(db.Model):
         return json.dumps({'conversation':d})
 
 class Message(db.Model):
-    index = db.IntegerProperty()
+
+    ''' Represents a message added to a conversational thread '''
+
     created_at = db.DateTimeProperty(auto_now_add=True)
     conversation = db.ReferenceProperty(Conversation, collection_name="messages")
     sender = db.StringProperty(required=True)
+    text = db.StringProperty()
     notifications = db.StringListProperty()
+
+    def set_notifications(self):
+        ''' Works out who should be notified '''
+
+        sender_is_known = False
+
+        for p in self.conversation.participants:
+            if (p==self.sender):
+                logging.info('Ignoring sender {0}'.format(p))
+                sender_is_known = True
+            else:
+                logging.info('Adding {0} to list of notifications'.format(p))
+                self.notifications.append(p)
+
+        if not sender_is_known:
+            logging.info('Adding sender to list of participants: {0}'.format(self.sender))
+            self.conversation.participants.append(self.sender)
+            self.conversation.put()
+
+        logging.info('Participants: {0}'.format(self.conversation.participants))
+        logging.info('Notifications: {0}'.format(self.notifications))
+
+        return self.notifications
