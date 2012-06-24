@@ -10,14 +10,12 @@ import os
 import webapp2
 import logging
 import models
+from api import ApiConversationHandler
 
-from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler 
 
 from google.appengine.api import mail
-
-DEBUG_IGNORE_ATTACHMENTS = True
 
 class EmailReceivedHandler(InboundMailHandler):
     
@@ -31,16 +29,22 @@ class EmailReceivedHandler(InboundMailHandler):
         - Send email to other recipients
         '''
 
-        id = mail_message.to.split('@')[0]
-        conversation = models.Conversation.get_by_id(int(id))
-        conversation.id = id
-        logging.info(mail_message.body.decode())
-        msg = models.Message(sender=mail_message.sender,
-                             text=mail_message.body.decode(),
-                             conversation=conversation)
-        msg.put()
+        cid = mail_message.to.split('@')[0]
+        logging.info('Received message for conversation {0}'.format(cid))
+        conversation = models.Conversation.get_by_id(int(cid))
 
-        
+        if not conversation:
+            logging.error('Not matching conversation, id={0}'.format(cid))
+            return
+
+        message = models.Message(sender=mail_message.sender,
+                                 text=mail_message.body.decode(),
+                                 conversation=conversation)
+        message.put()
+        logging.info('Message stored, sending notifications')
+        message.send_notifications()
+        return
+
 app = webapp2.WSGIApplication([EmailReceivedHandler.mapping()],
                               debug=True)
  

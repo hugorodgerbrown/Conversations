@@ -4,8 +4,8 @@ runtime: python27
 api_version: 1
 threadsafe: no
 
-#inbound_services:
-#- mail
+inbound_services:
+- mail
 
 handlers:
 - url: /favicon.ico

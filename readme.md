@@ -63,10 +63,10 @@ The API supports the concept of initialising a conversation with the first messa
     Accept: application/json;
 
     {
-        "from": "hugo@example.com",
+        "sender": "hugo@example.com",
         "to": ["fred@example.com"],
         "subject": "Example message",
-        "body": "this is a message"
+        "text": "this is a message"
     }
 
 *Sample Response*
@@ -90,8 +90,8 @@ The API supports the concept of initialising a conversation with the first messa
             {
                 'id': "123456.1",
                 'created':"2012-06-22T12:43:37+0100",
-                'from': "hugo@example.com",
-                'body': "this is a message",
+                'sender': "hugo@example.com",
+                'text': "this is a message",
                 'notifications':["fred@example.com"]
             }]
         },
@@ -132,15 +132,15 @@ Returns the entire conversation, including all messages, and a list of participa
                 {
                     'id': "123456.1",
                     'created':"2012-06-22T12:43:37+0100",
-                    'from': "hugo@example.com",
-                    'body': "this is a message"
+                    'sender': "hugo@example.com",
+                    'text': "this is a message"
                     'notifications':["fred@example.com"]
                 },
                 {
                     'id': "123456.2",
                     'created':"2012-06-22T12:43:37+0100",
-                    'from': "fred@example.com",
-                    'body': "this is a reply"
+                    'sender': "fred@example.com",
+                    'text': "this is a reply"
                     'notifications':["hugo@example.com"]
                 }
             ]
@@ -161,8 +161,8 @@ If the recipient is viewing the conversational thread on the web (e.g. looking a
 
 
     {
-        'from': "fred@example.com",
-        'body': "this is a reply"
+        'sender': "fred@example.com",
+        'text': "this is a reply"
     }
 
 *Sample Response*
@@ -207,8 +207,8 @@ This returns an individual message, out of context of the parent conversation.
     {
         'id': "123456.2",
         'created': "2012-06-22T12:43:37+0100",
-        'from': "fred@example.com",
-        'body': "this is a reply"
+        'sender': "fred@example.com",
+        'text': "this is a reply"
         'participants': ["fred@example.com","hugo@example.com"],
         'notifications':["hugo@example.com"]
     }

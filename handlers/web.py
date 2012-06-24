@@ -8,7 +8,6 @@ import models
 import json
 
 from google.appengine.api import mail
-from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
 API_PREFIX = '/api/v1/conversations'
