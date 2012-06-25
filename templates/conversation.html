@@ -6,20 +6,20 @@
                 <p><i>{{conversation.created_at}}</i></p>
             </div>
             <div class="span8">
-                    <table class="table table-bordered table-striped">
-                        <tr>
-                            <th>Received</th>
-                            <th>From</th>
-                            <th>Message</th>
-                        </tr>
-                        {% for message in conversation.messages %}
-                        <tr>
-                            <td>{{message.created_at}}</td>
-                            <td>{{message.sender}}</td>
-                            <td>{{message.text}}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Received</th>
+                        <th>From</th>
+                        <th>Message</th>
+                    </tr>
+                    {% for message in conversation.messages %}
+                    <tr>
+                        <td>{{message.created_at}}</td>
+                        <td>{{message.sender}}</td>
+                        <td>{{message.text}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
 
 {% endblock content %}

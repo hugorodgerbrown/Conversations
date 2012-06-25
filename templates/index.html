@@ -4,34 +4,38 @@
     <div class="row">
         <div class="span1">&nbsp;</div>
         <div class="span8">
-            <form name="input" action="/conversations" method="post" class="form-horizontal">
+            <form name="newConversation" id="newConversation" action="/conversations" method="post" class="form-horizontal cmxform">
                 <fieldset>
-                    <legend>Legend text</legend>
+                    <legend>Use this form to start a new conversation.</legend>
                     <div class="control-group">
                         <label class="control-label" for="sender">From:</label>
                         <div class="controls">
-                            <input type="text" class="input-xlarge" id="sender" name="sender" placeholder="Type your email here">
+                            <input type="text" class="input-xlarge required email" id="sender" name="sender" placeholder="Type your email here">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="recipient">To:</label>
                         <div class="controls">
-                            <input type="text" class="input-xlarge" id="recipient" name="recipient" placeholder="Type your recipient's email here">
+                            <input type="text" class="input-xlarge required email" id="recipient" name="recipient" placeholder="Type your recipient's email here">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="subject">Subject:</label>
                         <div class="controls">
-                            <input type="text" class="input-xlarge" id="subject" name="subject" placeholder="e.g. Exciting new opportunity">
+                            <input type="text" class="input-xlarge required" id="subject" name="subject" placeholder="e.g. Exciting new opportunity">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="text">Message:</label>
                         <div class="controls">
-                            <input type="text" class="input-xlarge" id="text" name="text" placeholder="e.g. Nice to meet you, to meet you...">
+                            <input type="text" class="input-xlarge required" id="text" name="text" placeholder="e.g. Nice to meet you, to meet you...">
+                        </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="control-group">
+                        <div class="controls">
+                             <button type="submit" class="btn">Start a conversation</button>
                         </div>
                     </div>
-                <input type="submit" />
             </fieldset>
             </form>
         </div>
