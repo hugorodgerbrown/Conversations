@@ -37,7 +37,10 @@ class EmailReceivedHandler(InboundMailHandler):
             logging.error('Not matching conversation, id={0}'.format(cid))
             return
 
-        message = models.Message(sender=mail_message.sender,
+        # Email addr comes in in "bob jones <bob@example.com>" format
+        # convert it into just the email - don't need the name for now
+        sender = email.utils.parseaddr(mail_message.sender)[1]
+        message = models.Message(sender=sender,
                                  text=mail_message.body.decode(),
                                  conversation=conversation)
         message.put()
