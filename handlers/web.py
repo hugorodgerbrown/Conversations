@@ -30,11 +30,20 @@ class WebConversationHandler(RequestHandler):
         return
 
 
-    def get_conversation(self, cid=0):
+    def get_conversation(self, cid):
         ''' renders a single conversation as a web page '''
-        logging.info(cid)
-        conversation = models.Conversation.get_by_id(int(cid))
-        conversation.id = id
+        try:
+           val = int(cid)
+        except ValueError:
+           self.error(400)
+           self.response.out.write('Invalid input ({0}) - conversation id must be an integer.'.format(cid))
+           return
+        conversation = models.Conversation.get_by_id(val)
+        logging.info(conversation)
+        if conversation is None:
+            self.error(404)
+            self.response.out.write("No such conversation: {0}".format(val))
+            return 
         logging.info(conversation)
         self.response.set_status(200, 'OK')
         self.response.out.write(template.render(

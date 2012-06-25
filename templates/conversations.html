@@ -2,17 +2,19 @@
 
             {% block content %}
 
-            <table border=1>
+            <table class="table table-bordered table-striped">
                 <tr>
                     <th>Id</th>
                     <th>Created</th>
                     <th>Subject</th>
+                    <th>Messages</th>
                 </tr>
                 {% for conversation in conversations %}
                 <tr>
-                    <td>{{conversation.id}}</td>
+                    <td>{{conversation.key.id}}</td>
                     <td>{{conversation.created_at}}</td>
-                    <td>{{conversation.subject}}</td>
+                    <td><a href="/conversations/{{conversation.key.id}}">{{conversation.subject}}</a></td>
+                    <td>{{conversation.messages.count}}
                 </tr>
                 {% endfor %}
             </table>

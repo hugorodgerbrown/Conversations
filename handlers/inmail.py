@@ -10,6 +10,7 @@ import os
 import webapp2
 import logging
 import models
+import email
 from api import ApiConversationHandler
 
 from google.appengine.ext.webapp import template

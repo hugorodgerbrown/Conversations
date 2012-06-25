@@ -1,34 +1,25 @@
 {% extends "base.html" %}
 
             {% block content %}
-
-            <table>
-                <tr>
-                    <td>Id</td>
-                    <td>{{conversation.id}}</td>
-                </tr>
-                <tr>
-                    <td>Created</td>
-                    <td>{{conversation.created_at}}</td>
-                </tr>
-                <tr>
-                    <td>Subject</td>
-                    <td>{{conversation.subject}}</td>
-                </tr>
-                <tr>
-                    <td>Participants</td>
-                    <td>
-                        <ul>
-                        {% for participant in conversation.participants %}
-                            <li>{{participant}}</li>
-                        {% endfor %}
-                        </ul>
-                </tr>
-            </table>
-            {% for msg in conversation.messages %}
-            <div class="message">
-                {{ msg.text }}
+            <div class="span8">
+                <h2>Conversation #{{conversation.key.id}}: "{{conversation.subject}}"</h2>
+                <p><i>{{conversation.created_at}}</i></p>
             </div>
-            {% endfor %}
+            <div class="span8">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Received</th>
+                            <th>From</th>
+                            <th>Message</th>
+                        </tr>
+                        {% for message in conversation.messages %}
+                        <tr>
+                            <td>{{message.created_at}}</td>
+                            <td>{{message.sender}}</td>
+                            <td>{{message.text}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+            </div>
 
 {% endblock content %}
