@@ -13,6 +13,7 @@ import models
 import email
 from api import ApiConversationHandler
 
+from google.appengine.api import mail
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler 
 
@@ -31,7 +32,18 @@ class EmailReceivedHandler(InboundMailHandler):
         '''
 
         to = email.utils.parseaddr(mail_message.to)[1]
-        cid = to.split('@')[0]
+        val = to.split('@')[0]
+        try:
+           cid = int(val)
+        except ValueError:
+            err_msg = 'Invalid inbound email \'to\' address ({0}) - recipient must be integer.'.format(mail_message.to)
+            mail.send_mail(sender = 'YunoJuno notifications <noreply@conversations-app.appspotmail.com>',
+               to = mail_message.sender,
+               subject = 'Unable to process your email',
+               body = err_msg)
+            logging.error(err_msg)
+            return
+
         logging.info('Received message for conversation {0}'.format(cid))
         conversation = models.Conversation.get_by_id(int(cid))
 
