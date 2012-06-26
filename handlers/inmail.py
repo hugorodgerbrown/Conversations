@@ -30,7 +30,8 @@ class EmailReceivedHandler(InboundMailHandler):
         - Send email to other recipients
         '''
 
-        cid = mail_message.to.split('@')[0]
+        to = email.utils.parseaddr(mail_message.to)[1]
+        cid = to.split('@')[0]
         logging.info('Received message for conversation {0}'.format(cid))
         conversation = models.Conversation.get_by_id(int(cid))
 
